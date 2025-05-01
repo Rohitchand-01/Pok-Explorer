@@ -29,7 +29,7 @@ function Comparison({ pokemons }) {
           className="px-4 py-2 rounded-lg bg-white shadow"
         >
           <option value="">Select First Pokémon</option>
-          {pokemons.map(pokemon => (
+          {Array.isArray(pokemons) && pokemons.map(pokemon => (
             <option key={pokemon.id} value={pokemon.name}>
               {pokemon.name}
             </option>
@@ -42,7 +42,7 @@ function Comparison({ pokemons }) {
           className="px-4 py-2 rounded-lg bg-white shadow"
         >
           <option value="">Select Second Pokémon</option>
-          {pokemons.map(pokemon => (
+          {Array.isArray(pokemons) && pokemons.map(pokemon => (
             <option key={pokemon.id} value={pokemon.name}>
               {pokemon.name}
             </option>
