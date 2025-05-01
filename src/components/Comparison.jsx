@@ -19,14 +19,14 @@ function Comparison({ pokemons }) {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-gradient-to-br from-purple-300 via-pink-200 to-blue-300 rounded-xl shadow-lg mt-10">
+    <div className="max-w-6xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-10">
       <h2 className="text-4xl font-extrabold text-center mb-8 text-gray-900">Compare Pokémon</h2>
 
       <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-6">
         <select
           value={selectedPokemon1}
           onChange={e => setSelectedPokemon1(e.target.value)}
-          className="px-4 py-2 rounded-lg bg-white shadow"
+          className="px-4 py-2 rounded-lg bg-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
         >
           <option value="">Select First Pokémon</option>
           {Array.isArray(pokemons) && pokemons.map(pokemon => (
@@ -39,7 +39,7 @@ function Comparison({ pokemons }) {
         <select
           value={selectedPokemon2}
           onChange={e => setSelectedPokemon2(e.target.value)}
-          className="px-4 py-2 rounded-lg bg-white shadow"
+          className="px-4 py-2 rounded-lg bg-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
         >
           <option value="">Select Second Pokémon</option>
           {Array.isArray(pokemons) && pokemons.map(pokemon => (
@@ -62,7 +62,7 @@ function Comparison({ pokemons }) {
           {[pokemon1Data, pokemon2Data].map((pokemon, idx) => (
             <div
               key={pokemon.name}
-              className="w-full md:w-1/2 bg-white rounded-lg shadow-lg p-6 flex flex-col items-center"
+              className="w-full md:w-1/2 bg-gray-50 rounded-lg shadow-md p-6 flex flex-col items-center"
             >
               <img
                 src={pokemon.sprites.other['official-artwork'].front_default}

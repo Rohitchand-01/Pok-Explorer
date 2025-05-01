@@ -2,12 +2,23 @@ import { Link } from 'react-router-dom'
 
 function Header () {
   return (
-    <header className='p-6 bg-gradient-to-br from-purple-300 via-pink-200 to-blue-300'>
-      <nav className='flex justify-between items-center'>
-        <h1 className='text-2xl font-semibold text-white'>Pokédex</h1>
-        <Link to='/favorites' className='text-white font-medium'>
-          Favorites
-        </Link>
+    <header className="p-6 bg-gray-900">
+      <nav className="flex justify-between items-center">
+        <h1 className="text-2xl font-semibold text-white">
+          PokéExplorer
+        </h1>
+        <div className="flex space-x-6">
+          <Link 
+            to="/" 
+            className="text-white hover:text-gray-300 transition duration-150">
+            Home
+          </Link>
+          <Link 
+            to="/favorites" 
+            className="text-white hover:text-gray-300 transition duration-150">
+            Favorites
+          </Link>
+        </div>
       </nav>
     </header>
   )

@@ -2,14 +2,14 @@ import { Link } from 'react-router-dom'
 
 function PokemonCard({ pokemon, toggleFavorite, isFavorite }) {
   return (
-    <div className="bg-white bg-opacity-60 backdrop-blur-md rounded-3xl p-6 flex flex-col items-center shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300">
+    <div className="bg-white rounded-xl p-6 flex flex-col items-center shadow-lg hover:shadow-2xl transition-all duration-300">
       <Link to={`/pokemon/${pokemon.id}`} className="block text-center">
         <img
           src={pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}
           alt={pokemon.name}
           className="w-24 h-24 object-contain sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48"
         />
-        <h3 className="mt-4 text-lg font-bold capitalize text-gray-700">{pokemon.name}</h3>
+        <h3 className="mt-4 text-xl font-semibold capitalize text-gray-800">{pokemon.name}</h3>
         <p className="text-sm text-gray-500 mb-2">#{pokemon.id}</p>
         <div className="flex flex-wrap justify-center gap-2 mt-2">
           {pokemon.types.map(t => (
@@ -29,8 +29,7 @@ function PokemonCard({ pokemon, toggleFavorite, isFavorite }) {
         className={`mt-5 w-full py-2 rounded-full font-semibold text-sm transition-all duration-200 shadow 
           ${isFavorite
             ? 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-400'
-            : 'bg-green-500 text-white hover:bg-green-600 focus:ring-green-400'}
-          focus:outline-none focus:ring-2 focus:ring-offset-2`}
+            : 'bg-green-500 text-white hover:bg-green-600 focus:ring-green-400'}`}
       >
         {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
       </button>

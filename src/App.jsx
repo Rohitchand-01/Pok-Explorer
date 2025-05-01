@@ -6,7 +6,7 @@ import TypeFilter from './components/TypeFilter'
 import PokemonCard from './components/PokemonCard'
 import Favorites from './components/Favorites'
 import PokemonDetails from './components/PokemonDetail'
-import Comparison from './components/Comparison' // NEW: Import Comparison component
+import Comparison from './components/Comparison'
 
 function App() {
   const [pokemons, setPokemons] = useState([])
@@ -63,7 +63,7 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-purple-300 via-pink-200 to-blue-300">
+      <div className="min-h-screen bg-gray-50">
         <Header />
         <div className="max-w-6xl mx-auto p-6">
           <Routes>
@@ -74,15 +74,14 @@ function App() {
                   <TypeFilter selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} />
                 </div>
 
-                {/* Compare Pokémon Button */}
-                <div className="mt-6 text-center flex justify-between">
-                  <Link to="/compare" className="bg-blue-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-blue-700 transition">
+                <div className="mt-6 flex justify-between">
+                  <Link to="/compare" className="bg-gray-900 text-white px-6 py-2 rounded-full hover:bg-gray-700 transition duration-150">
                     Compare Pokémon
                   </Link>
-                  <div className='display flex gap-4'>
+                  <div className='flex gap-4'>
                     <div>
-                      <label htmlFor='sort'>Sort by</label>
-                      <select onChange={(e) => setSortBy(e.target.value)} name='sort'>
+                      <label htmlFor='sort' className="text-gray-700">Sort by</label>
+                      <select onChange={(e) => setSortBy(e.target.value)} name='sort' className="p-2 rounded-md bg-white border border-gray-300 text-gray-800">
                         <option value="id-asc">ID Ascending</option>
                         <option value="id-desc">ID Descending</option>
                         <option value="name-asc">Name Ascending</option>
@@ -90,46 +89,27 @@ function App() {
                       </select>
                     </div>
                     <div>
-                      <label for='cars'>Pokémons per page</label>
-                      <select onChange={(e) => setItemsPerPage(Number(e.target.value))} name='Pages'>
-                        <option onClick={() => setItemsPerPage(10)} value={10}>10</option>
-                        <option onClick={() => setItemsPerPage(20)} value={20}>20</option>
-                        <option onClick={() => setItemsPerPage(50)} value={50}>50</option>
+                      <label htmlFor='itemsPerPage' className="text-gray-700">Pokémons per page</label>
+                      <select onChange={(e) => setItemsPerPage(Number(e.target.value))} name='pages' className="p-2 rounded-md bg-white border border-gray-300 text-gray-800">
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={50}>50</option>
                       </select>
                     </div>
                   </div>
                 </div>
 
-                {loading && <p className="text-center text-xl font-medium text-gray-700 mt-20">Loading Pokémons...</p>}
-                {error && <p className="text-center text-xl font-medium text-red-500 mt-20">Failed to load data.</p>}
-                {!loading && !error && filteredPokemons.length === 0 && <p className="text-center text-xl font-medium text-gray-700 mt-20">No Pokémon found.</p>}
+                {loading && <p className="text-center text-lg font-medium text-gray-700 mt-20">Loading Pokémons...</p>}
+                {error && <p className="text-center text-lg font-medium text-red-500 mt-20">Failed to load data.</p>}
+                {!loading && !error && filteredPokemons.length === 0 && <p className="text-center text-lg font-medium text-gray-700 mt-20">No Pokémon found.</p>}
                 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mt-10">
-                  {sortBy == "id-asc" && filteredPokemons.sort((a, b) => a.id - b.id).map(pokemon => (
-                    <PokemonCard 
-                      key={pokemon.id} 
-                      pokemon={pokemon} 
-                      toggleFavorite={toggleFavorite} 
-                      isFavorite={favorites.some(fav => fav.id === pokemon.id)}
-                    />
-                  ))}
-                  {sortBy == "id-desc" && filteredPokemons.sort((a, b) => b.id - a.id).map(pokemon => (
-                    <PokemonCard 
-                      key={pokemon.id} 
-                      pokemon={pokemon} 
-                      toggleFavorite={toggleFavorite} 
-                      isFavorite={favorites.some(fav => fav.id === pokemon.id)}
-                    />
-                  ))}
-                  {sortBy == "name-asc" && filteredPokemons.sort((a, b) => a.name.localeCompare(b.name)).map(pokemon => (
-                    <PokemonCard 
-                      key={pokemon.id} 
-                      pokemon={pokemon} 
-                      toggleFavorite={toggleFavorite} 
-                      isFavorite={favorites.some(fav => fav.id === pokemon.id)}
-                    />
-                  ))}
-                  {sortBy == "name-desc" && filteredPokemons.sort((a, b) => b.name.localeCompare(a.name)).map(pokemon => (
+                  {filteredPokemons.sort((a, b) => {
+                    if (sortBy === 'id-asc') return a.id - b.id
+                    if (sortBy === 'id-desc') return b.id - a.id
+                    if (sortBy === 'name-asc') return a.name.localeCompare(b.name)
+                    if (sortBy === 'name-desc') return b.name.localeCompare(a.name)
+                  }).map(pokemon => (
                     <PokemonCard 
                       key={pokemon.id} 
                       pokemon={pokemon} 
@@ -138,22 +118,18 @@ function App() {
                     />
                   ))}
                 </div>
-                
-                <div className='p-4 mt-10 text-center bg-white rounded-lg shadow-md cursor-pointer hover:bg-gray-100' onClick={() => setItemsPerPage(prev => {
-                  const newLimit = prev + 10
-                  setItemsPerPage(newLimit)
-                  fetchData()
-                  return newLimit
-                })}>
-                  <p>Load more</p>
+
+                <div 
+                  className="p-4 mt-10 text-center bg-white rounded-lg shadow-md cursor-pointer hover:bg-gray-100 transition duration-150" 
+                  onClick={() => setItemsPerPage(prev => prev + 10)}
+                >
+                  <p className="text-gray-700">Load more</p>
                 </div>
               </>
             } />
             
             <Route path="/favorites" element={<Favorites favorites={favorites} toggleFavorite={toggleFavorite} />} />
             <Route path="/pokemon/:id" element={<PokemonDetails />} />
-
-            {/* New Route: Comparison */}
             <Route path="/compare" element={<Comparison pokemons={pokemons} />} />
           </Routes>
         </div>
