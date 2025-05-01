@@ -1,21 +1,14 @@
-import React from "react";
-import pokeballImage from "../assets/pokeball.png"; // Import the image
+import { Link } from 'react-router-dom'
 
-const Header = () => {
+function Header() {
   return (
-    <header className="w-full bg-gradient-to-r from-purple-700 via-pink-500 to-purple-300 py-6 shadow-lg">
-      <div className="container mx-auto flex items-center justify-center px-4 sm:px-8 md:px-16 lg:px-32 xl:px-40">
-        <img 
-          src={pokeballImage} // Use the imported image
-          alt="Pokéball" 
-          className="w-8 h-8 mr-4"  // Adjust the size of the image as needed
-        />
-        <h1 className="text-3xl font-extrabold text-white tracking-wide text-center">
-          PokéExplorer
-        </h1>
-      </div>
+    <header className="p-6 bg-gradient-to-br from-purple-300 via-pink-200 to-blue-300">
+      <nav className="flex justify-between items-center">
+        <h1 className="text-2xl font-semibold text-white">Pokédex</h1>
+        <Link to="/favorites" className="text-white font-medium">Favorites</Link>
+      </nav>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
