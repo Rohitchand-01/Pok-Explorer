@@ -53,7 +53,6 @@ function Home() {
             <PokemonCard key={pokemon.id} pokemon={pokemon} />
           ))}
         </div>
-        <Pagination />
       </div>
     </div>
   )

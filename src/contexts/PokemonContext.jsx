@@ -19,7 +19,7 @@ export function PokemonProvider({ children }) {
   useEffect(() => {
     const fetchPokemons = async () => {
       try {
-        const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150')
+        const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10')
         const data = await res.json()
         const details = await Promise.all(
           data.results.map(p => fetch(p.url).then(res => res.json()))

@@ -10,31 +10,34 @@ import Comparison from './components/Comparison' // NEW: Import Comparison compo
 
 function App() {
   const [pokemons, setPokemons] = useState([])
+  const [itemsPerPage, setItemsPerPage] = useState(10)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedTypes, setSelectedTypes] = useState([])
+  const [sortBy, setSortBy] = useState('id-asc')
   const [favorites, setFavorites] = useState(() => {
     const storedFavorites = localStorage.getItem('favorites')
     return storedFavorites ? JSON.parse(storedFavorites) : []
   })
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=150')
-        const data = await response.json()
-        const promises = data.results.map(pokemon => fetch(pokemon.url).then(res => res.json()))
-        const results = await Promise.all(promises)
-        setPokemons(results)
-      } catch {
-        setError(true)
-      } finally {
-        setLoading(false)
-      }
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit='+itemsPerPage)
+      const data = await response.json()
+      const promises = data.results.map(pokemon => fetch(pokemon.url).then(res => res.json()))
+      const results = await Promise.all(promises)
+      setPokemons(results)
+    } catch {
+      setError(true)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchData()
-  }, [])
+  }, [itemsPerPage])
 
   const toggleFavorite = (pokemon) => {
     setFavorites(prevFavorites => {
@@ -72,10 +75,29 @@ function App() {
                 </div>
 
                 {/* Compare Pokémon Button */}
-                <div className="mt-6 text-center">
+                <div className="mt-6 text-center flex justify-between">
                   <Link to="/compare" className="bg-blue-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-blue-700 transition">
                     Compare Pokémon
                   </Link>
+                  <div className='display flex gap-4'>
+                    <div>
+                      <label htmlFor='sort'>Sort by</label>
+                      <select onChange={(e) => setSortBy(e.target.value)} name='sort'>
+                        <option value="id-asc">ID Ascending</option>
+                        <option value="id-desc">ID Descending</option>
+                        <option value="name-asc">Name Ascending</option>
+                        <option value="name-desc">Name Descending</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for='cars'>Pokémons per page</label>
+                      <select onChange={(e) => setItemsPerPage(Number(e.target.value))} name='Pages'>
+                        <option onClick={() => setItemsPerPage(10)} value={10}>10</option>
+                        <option onClick={() => setItemsPerPage(20)} value={20}>20</option>
+                        <option onClick={() => setItemsPerPage(50)} value={50}>50</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
 
                 {loading && <p className="text-center text-xl font-medium text-gray-700 mt-20">Loading Pokémons...</p>}
@@ -83,7 +105,7 @@ function App() {
                 {!loading && !error && filteredPokemons.length === 0 && <p className="text-center text-xl font-medium text-gray-700 mt-20">No Pokémon found.</p>}
                 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mt-10">
-                  {filteredPokemons.map(pokemon => (
+                  {sortBy == "id-asc" && filteredPokemons.sort((a, b) => a.id - b.id).map(pokemon => (
                     <PokemonCard 
                       key={pokemon.id} 
                       pokemon={pokemon} 
@@ -91,6 +113,39 @@ function App() {
                       isFavorite={favorites.some(fav => fav.id === pokemon.id)}
                     />
                   ))}
+                  {sortBy == "id-desc" && filteredPokemons.sort((a, b) => b.id - a.id).map(pokemon => (
+                    <PokemonCard 
+                      key={pokemon.id} 
+                      pokemon={pokemon} 
+                      toggleFavorite={toggleFavorite} 
+                      isFavorite={favorites.some(fav => fav.id === pokemon.id)}
+                    />
+                  ))}
+                  {sortBy == "name-asc" && filteredPokemons.sort((a, b) => a.name.localeCompare(b.name)).map(pokemon => (
+                    <PokemonCard 
+                      key={pokemon.id} 
+                      pokemon={pokemon} 
+                      toggleFavorite={toggleFavorite} 
+                      isFavorite={favorites.some(fav => fav.id === pokemon.id)}
+                    />
+                  ))}
+                  {sortBy == "name-desc" && filteredPokemons.sort((a, b) => b.name.localeCompare(a.name)).map(pokemon => (
+                    <PokemonCard 
+                      key={pokemon.id} 
+                      pokemon={pokemon} 
+                      toggleFavorite={toggleFavorite} 
+                      isFavorite={favorites.some(fav => fav.id === pokemon.id)}
+                    />
+                  ))}
+                </div>
+                
+                <div className='p-4 mt-10 text-center bg-white rounded-lg shadow-md cursor-pointer hover:bg-gray-100' onClick={() => setItemsPerPage(prev => {
+                  const newLimit = prev + 10
+                  setItemsPerPage(newLimit)
+                  fetchData()
+                  return newLimit
+                })}>
+                  <p>Load more</p>
                 </div>
               </>
             } />
