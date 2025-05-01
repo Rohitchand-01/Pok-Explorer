@@ -2,20 +2,24 @@ import { Link } from 'react-router-dom'
 
 function PokemonCard({ pokemon, toggleFavorite, isFavorite }) {
   return (
-    <div className="bg-white rounded-xl p-6 flex flex-col items-center shadow-lg hover:shadow-2xl transition-all duration-300">
-      <Link to={`/pokemon/${pokemon.id}`} className="block text-center">
+    <div className="bg-white rounded-2xl p-5 shadow-md hover:shadow-lg transition-all duration-300 flex flex-col items-center text-center">
+      <Link to={`/pokemon/${pokemon.id}`} className="w-full flex flex-col items-center gap-2">
         <img
           src={pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}
           alt={pokemon.name}
-          className="w-24 h-24 object-contain sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48"
+          className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 object-contain transition-transform duration-300 hover:scale-105"
         />
-        <h3 className="mt-4 text-xl font-semibold capitalize text-gray-800">{pokemon.name}</h3>
-        <p className="text-sm text-gray-500 mb-2">#{pokemon.id}</p>
-        <div className="flex flex-wrap justify-center gap-2 mt-2">
+
+        <div>
+          <h3 className="text-xl font-bold capitalize text-gray-800">{pokemon.name}</h3>
+          <p className="text-sm text-gray-400">#{pokemon.id}</p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-1 mt-2">
           {pokemon.types.map(t => (
             <span
               key={t.type.name}
-              className="px-3 py-1 rounded-full text-xs font-semibold text-white"
+              className="text-xs font-medium text-white px-3 py-1 rounded-full"
               style={{ backgroundColor: getTypeColor(t.type.name) }}
             >
               {t.type.name}
@@ -26,10 +30,10 @@ function PokemonCard({ pokemon, toggleFavorite, isFavorite }) {
 
       <button
         onClick={() => toggleFavorite(pokemon)}
-        className={`mt-5 w-full py-2 rounded-full font-semibold text-sm transition-all duration-200 shadow 
+        className={`mt-4 w-full py-2 rounded-full text-sm font-medium transition-colors duration-200 shadow 
           ${isFavorite
-            ? 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-400'
-            : 'bg-green-500 text-white hover:bg-green-600 focus:ring-green-400'}`}
+            ? 'bg-red-500 text-white hover:bg-red-600'
+            : 'bg-green-500 text-white hover:bg-green-600'}`}
       >
         {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
       </button>

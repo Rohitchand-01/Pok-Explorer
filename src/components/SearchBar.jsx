@@ -3,9 +3,9 @@ function SearchBar({ searchTerm, setSearchTerm }) {
     <input
       type="text"
       placeholder="Search Pokémon..."
-      className="w-full sm:w-64 md:w-80 lg:w-96 px-6 py-3 rounded-full bg-white bg-opacity-60 backdrop-blur-md shadow-md placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-pink-300 transition transform hover:scale-105"
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
+      className="w-full sm:w-64 md:w-80 lg:w-96 px-5 py-3 rounded-full bg-white shadow-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-200"
     />
   );
 }
