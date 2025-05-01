@@ -24,7 +24,7 @@ function TypeFilter({ selectedTypes, setSelectedTypes }) {
           multiple
           value={selectedTypes}
           onChange={handleChange}
-          className="w-full h-48 px-4 py-2 text-gray-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full h-32 sm:h-48 px-4 py-2 text-sm sm:text-base text-gray-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           {types.map(type => (
             <option
